@@ -2,10 +2,18 @@
   "name": "katsu-ichinichihitotsu",
   "private": true,
   "scripts": {
+    "build": "npm run build:css",
     "build:css": "sass style.scss style.css",
-    "watch:css": "sass --watch style.scss:style.css"
+    "watch:css": "sass --watch style.scss:style.css",
+    "start": "npm run build:css && serve . -s -l $PORT"
+  },
+  "dependencies": {
+    "serve": "^14.2.4"
   },
   "devDependencies": {
     "sass": "^1.69.5"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }
