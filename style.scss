@@ -1,0 +1,1421 @@
+// かつの一日ひとつ - BEM + SCSS（大胆リニューアル）
+// ================================
+// Variables
+// ================================
+$color-text: #1c1c1c;
+$color-text-light: #5a5a5a;
+$color-link: #c45c26;
+$color-link-hover: #a04a1f;
+$color-border: #e2ddd6;
+$color-bg: #fff;
+$color-bg-alt: #faf8f5;
+$color-bg-page: #f0ebe3;
+$color-header-bg: #2d2a26;
+$color-accent: #c45c26;
+$color-tag: #e8a35c;
+$color-tag-text: #1c1c1c;
+$font-sans: 'Noto Sans JP', sans-serif;
+$font-serif: 'Noto Serif JP', serif;
+$max-width: 1200px;
+$sidebar-width: 320px;
+$content-gap: 3rem;
+$breakpoint-sidebar: 900px;
+$card-radius: 16px;
+$card-shadow: 0 2px 12px rgba(45, 42, 38, 0.06);
+$card-shadow-hover: 0 12px 32px rgba(45, 42, 38, 0.1);
+$ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+// ================================
+// Base / Reset
+// ================================
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: $font-sans;
+  font-size: 16px;
+  line-height: 1.75;
+  color: $color-text;
+  background: $color-bg-page;
+  padding-bottom: 88px;
+
+  @media (min-width: $breakpoint-sidebar + 1) {
+    padding-bottom: 0;
+  }
+
+  a {
+    color: $color-link;
+    text-decoration: none;
+
+    &:hover {
+      color: $color-link-hover;
+      text-decoration: underline;
+    }
+  }
+}
+
+::selection {
+  background: rgba(196, 92, 38, 0.2);
+  color: $color-text;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// ================================
+// Block: page (site wrapper)
+// ================================
+.page {
+  max-width: $max-width;
+  margin: 0 auto;
+}
+
+// ================================
+// Block: site-header（中央揃え・ダークトーン）
+// ================================
+.site-header {
+  padding: 1.5rem 1rem;
+  background: $color-header-bg;
+  text-align: center;
+  position: relative;
+  border-bottom: 4px solid $color-accent;
+
+  @media (max-width: 600px) {
+    padding: 1.25rem 1rem;
+  }
+}
+
+.site-header__description {
+  margin: 0 0 0.35rem;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.site-header__title {
+  margin: 0;
+  font-family: $font-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #fff;
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    display: none;
+  }
+
+  a {
+    color: #fff;
+
+    &:hover {
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+    }
+  }
+}
+
+// ================================
+// Block: content-area
+// ================================
+.content-area {
+  display: grid;
+  grid-template-columns: 1fr $sidebar-width;
+  gap: $content-gap;
+  padding: 1rem 0 2rem;
+
+  @media (max-width: $breakpoint-sidebar) {
+    grid-template-columns: 1fr;
+    padding: 1rem 1rem 2rem;
+  }
+
+  &__main {
+    min-width: 0;
+    background: $color-bg;
+    padding: 1rem;
+    border-radius: $card-radius;
+
+    @media (max-width: $breakpoint-sidebar) {
+      padding: 0;
+      background: transparent;
+    }
+  }
+
+  &__sidebar {
+    min-width: 0;
+
+    @media (max-width: $breakpoint-sidebar) {
+      display: none; // SPではオーバーレイで表示
+    }
+  }
+}
+
+// ================================
+// Block: entry-list
+// ================================
+.entry-list {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+}
+
+.entry-list__item {
+  margin-bottom: 0.75rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// ================================
+// Block: search-overlay（検索オーバーレイ）
+// ================================
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  pointer-events: none;
+  visibility: hidden;
+  transition: visibility 0.25s $ease-out;
+}
+
+body.is-search-open .search-overlay {
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.search-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  transition: opacity 0.25s $ease-out;
+}
+
+body.is-search-open .search-overlay__backdrop {
+  opacity: 1;
+}
+
+.search-overlay__panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: $color-bg;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-100%);
+  transition: transform 0.3s $ease-out;
+}
+
+body.is-search-open .search-overlay__panel {
+  transform: translateY(0);
+}
+
+.search-overlay__inner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  max-width: $max-width;
+  margin: 0 auto;
+}
+
+.search-overlay__form {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  padding: 0.4rem 0.5rem 0.4rem 1rem;
+  background: $color-bg-alt;
+  border: 2px solid $color-border;
+  border-radius: 999px;
+  transition: border-color 0.2s $ease-out, box-shadow 0.2s $ease-out;
+
+  &:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px #2563eb;
+  }
+}
+
+.search-overlay__close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.5rem;
+  color: $color-text;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.2s $ease-out;
+  -webkit-appearance: none;
+  appearance: none;
+
+  &:hover {
+    background: $color-bg-alt;
+  }
+}
+
+// 検索フォーム共通（オーバーレイ内で使用）
+.search-inline__input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0.5rem 0.5rem 0;
+  font-family: $font-sans;
+  font-size: 1rem;
+  color: $color-text;
+  background: none;
+  border: none;
+  outline: none;
+
+  &::placeholder {
+    color: $color-text-light;
+  }
+}
+
+.search-inline__submit {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: $color-text-light;
+  transition: color 0.2s $ease-out;
+
+  &:hover {
+    color: $color-text;
+  }
+}
+
+.search-inline__icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+// ================================
+// Block: entry (post item) - カード型（上部ストリップ・角丸16px）
+// ================================
+.entry--card,
+.entry {
+  display: flex;
+  gap: 1rem;
+  padding: 0;
+  margin-bottom: 0;
+  background: $color-bg;
+  border-radius: $card-radius;
+  box-shadow: $card-shadow;
+  border: 1px solid $color-border;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.25s $ease-out, box-shadow 0.25s $ease-out, border-color 0.25s $ease-out;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: $color-accent;
+    opacity: 0.9;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &__link {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    min-width: 0;
+    padding: 1rem 1rem 1rem 1rem;
+    text-decoration: none;
+    color: inherit;
+
+    &:hover .entry__title a {
+      color: $color-link;
+      text-decoration: none;
+    }
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $card-shadow-hover;
+    border-color: rgba(196, 92, 38, 0.25);
+  }
+
+  &__thumb {
+    position: relative;
+    flex-shrink: 0;
+    width: 120px;
+    height: 90px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: $color-bg-alt;
+    margin-top: 2px;
+
+    img,
+    .entry__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s $ease-out;
+    }
+  }
+
+  &:hover &__thumb img,
+  &:hover &__thumb .entry__img {
+    transform: scale(1.04);
+  }
+
+  &__tag,
+  &__category-tag {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    padding: 3px 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: $color-tag;
+    color: $color-tag-text;
+    border-radius: 999px;
+    letter-spacing: 0.02em;
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  &__meta {
+    display: none;
+  }
+
+  &__category {
+    a {
+      font-size: 0.85rem;
+      color: $color-text-light;
+    }
+  }
+
+  &__title {
+    margin: 0 0 0.35rem;
+    font-family: $font-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+
+    a,
+    & {
+      color: $color-text;
+    }
+
+    a:hover {
+      color: $color-link;
+      text-decoration: none;
+    }
+  }
+
+  &__link:hover &__title {
+    color: $color-link;
+  }
+
+  &__date-icon {
+    display: none;
+  }
+
+  &__summary {
+    display: none;
+    margin: 0 0 0.5rem;
+    font-size: 0.9rem;
+    color: $color-text-light;
+    line-height: 1.55;
+
+    @media (min-width: $breakpoint-sidebar + 1) {
+      display: block;
+    }
+  }
+
+  &__date {
+    margin: 0 0 0 auto;
+    font-size: 0.8rem;
+    color: $color-text-light;
+    margin-top: auto;
+  }
+
+  &__category-tag {
+    display: none;
+  }
+}
+
+// ================================
+// Block: pagination
+// ================================
+// ページネーション（枠線スタイル）
+.pagination {
+  padding: 1.5rem 0;
+  border: none;
+  text-align: center;
+
+  &__next {
+    display: block;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto 1rem;
+    padding: 0.85rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.04em;
+    background: $color-bg;
+    color: $color-accent;
+    border: 2px solid $color-accent;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: background 0.2s $ease-out, color 0.2s, transform 0.2s $ease-out;
+
+    &:hover {
+      background: $color-accent;
+      color: #fff;
+      text-decoration: none;
+      transform: translateY(-1px);
+    }
+  }
+
+  &__numbers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  &__current {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.25rem;
+    height: 2.25rem;
+    padding: 0 0.5rem;
+    font-weight: 600;
+    background: $color-bg;
+    color: $color-accent;
+    border: 2px solid $color-accent;
+    border-radius: 10px;
+  }
+
+  &__dots {
+    margin: 0;
+    padding: 0 0.25rem;
+    color: $color-text-light;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.25rem;
+    height: 2.25rem;
+    padding: 0 0.5rem;
+    background: $color-bg;
+    color: $color-text;
+    border: 2px solid $color-border;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: background 0.2s $ease-out, border-color 0.2s, color 0.2s;
+
+    &:hover {
+      background: $color-bg-alt;
+      border-color: $color-accent;
+      color: $color-accent;
+      text-decoration: none;
+    }
+  }
+}
+
+// ================================
+// Block: calendar
+// ================================
+.calendar {
+  padding: 2rem 0;
+
+  @media (max-width: $breakpoint-sidebar) {
+    // SPではサイドバー外のカレンダーのみ非表示（オーバーレイ内 .calendar--overlay は表示する）
+    &:not(.calendar--overlay) {
+      display: none;
+    }
+  }
+
+  &__title {
+    margin: 0 0 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+
+    th,
+    td {
+      padding: 0.4rem 0.25rem;
+      text-align: center;
+      border: 1px solid $color-border;
+    }
+
+    th {
+      font-weight: 600;
+      background: $color-bg-alt;
+    }
+
+    td a:hover {
+      text-decoration: none;
+    }
+  }
+
+  &__nav {
+    margin: 0.75rem 0 0;
+    font-size: 0.9rem;
+    color: $color-text-light;
+  }
+}
+
+// ================================
+// Block: sidebar
+// ================================
+.sidebar {
+  min-width: 0;
+
+  .calendar {
+    padding: 1.5rem 0;
+  }
+}
+
+// サイドバー内：総目次カード（PC）
+.sidebar .widget--about-card .widget--about-card__link {
+  display: flex;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+  padding: 0.6rem;
+  background: $color-bg-alt;
+  border: 1px solid $color-border;
+  border-radius: $card-radius;
+  transition: border-color 0.2s $ease-out, box-shadow 0.2s $ease-out;
+
+  &:hover {
+    border-color: rgba($color-accent, 0.3);
+    box-shadow: $card-shadow;
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+.sidebar .widget--about-card__thumb {
+  flex-shrink: 0;
+  width: 80px;
+  height: 60px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: $color-bg;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.sidebar .widget--about-card__body {
+  min-width: 0;
+}
+
+.sidebar .widget--about-card__title {
+  margin: 0 0 0.25rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: $color-text;
+}
+
+.sidebar .widget--about-card__text {
+  margin: 0 0 0.35rem;
+  font-size: 0.8rem;
+  color: $color-text-light;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.sidebar .widget--about-card .widget__meta {
+  margin: 0;
+  font-size: 0.75rem;
+}
+
+// サイドバー内：人気記事（総目次と同様のカード・PC）
+.sidebar .widget--popular-cards .widget__list {
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar .widget--popular-cards .widget__item {
+  margin: 0 0 0.75rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.sidebar .widget--popular-cards .widget--about-card__link {
+  display: flex;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+  padding: 0.6rem;
+  background: $color-bg-alt;
+  border: 1px solid $color-border;
+  border-radius: $card-radius;
+  transition: border-color 0.2s $ease-out, box-shadow 0.2s $ease-out;
+
+  &:hover {
+    border-color: rgba($color-accent, 0.3);
+    box-shadow: $card-shadow;
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+.sidebar .widget--popular-cards .widget--about-card__thumb {
+  flex-shrink: 0;
+  width: 80px;
+  height: 60px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: $color-bg;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+.sidebar .widget--popular-cards .widget--about-card__body {
+  min-width: 0;
+}
+
+.sidebar .widget--popular-cards .widget--about-card__title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: $color-text;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// サイドバー内：プロフィール（PC・黄枠ボックス＋アバター）
+.sidebar .widget--author {
+  .widget__body {
+    p { margin: 0 0 0.5rem; }
+  }
+}
+
+.sidebar .widget--author .widget__body {
+  padding: 0.75rem;
+  background: rgba($color-tag, 0.2);
+  border: 2px solid rgba($color-accent, 0.4);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.sidebar .widget--author .widget__name {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.sidebar .widget--author .widget__body p:first-of-type {
+  text-align: justify;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: $color-text;
+}
+
+// プロフィール用アバター（HTMLにimg追加するか、疑似要素で丸を出すか）
+.sidebar .widget--author .widget__title {
+  margin: 0 0 0.5rem;
+
+  @media (min-width: $breakpoint-sidebar + 1) {
+    display: none; /* PC時は名前（widget__name）のみ表示し重複を解消 */
+  }
+}
+
+.sidebar .widget--author__avatar {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 0.5rem;
+  border-radius: 50%;
+  overflow: hidden;
+  background: $color-bg;
+  border: 2px solid $color-border;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+}
+
+// ================================
+// Block: widget
+// ================================
+.widget {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid $color-border;
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+
+  &__title {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__item {
+    margin: 0.35rem 0;
+
+    a {
+      font-size: 0.95rem;
+    }
+  }
+
+  &__body {
+    p {
+      margin: 0 0 0.5rem;
+      font-size: 0.9rem;
+      color: $color-text-light;
+    }
+  }
+
+  &__meta {
+    font-size: 0.8rem !important;
+    color: $color-text-light;
+  }
+
+  &__name {
+    font-weight: 600;
+    color: $color-text;
+  }
+
+  &__link {
+    font-size: 0.9rem;
+  }
+
+  &__branding {
+    margin: 0;
+    font-family: $font-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  // Modifier: popular posts list
+  &--popular {
+    .widget__item {
+      margin-bottom: 0.75rem;
+    }
+
+    .widget__item a {
+      font-size: 0.9rem;
+      display: block;
+    }
+
+    .widget__date {
+      font-size: 0.8rem;
+      color: $color-text-light;
+    }
+  }
+}
+
+// ================================
+// Block: site-footer
+// ================================
+.site-footer {
+  padding: 1.75rem 1rem 3rem;
+  border-top: 1px solid $color-border;
+  font-size: 0.9rem;
+  color: $color-text-light;
+  position: relative;
+  text-align: center;
+
+  @media (min-width: $breakpoint-sidebar + 1) {
+    padding: 1.5rem 1rem 2rem;
+    text-align: left;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 48px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(196, 92, 38, 0.4), transparent);
+    border-radius: 1px;
+  }
+
+  &__inner {
+    max-width: $max-width;
+    margin: 0 auto;
+
+    @media (min-width: $breakpoint-sidebar + 1) {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      text-align: left;
+    }
+  }
+
+  &__copyright {
+    margin: 0 0 0.25rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+
+    @media (min-width: $breakpoint-sidebar + 1) {
+      margin: 0;
+    }
+  }
+
+  &__branding {
+    margin: 0 0 0.5rem;
+    font-family: $font-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: $color-text-light;
+
+    @media (min-width: $breakpoint-sidebar + 1) {
+      margin: 0;
+    }
+  }
+
+  &__right {
+    @media (min-width: $breakpoint-sidebar + 1) {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+  }
+
+  &__to-top {
+    display: inline-block;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+    line-height: 2.25rem;
+    text-align: center;
+    color: #fff;
+    background: $color-accent;
+    border-radius: 50%;
+    text-decoration: none;
+    transition: background 0.2s $ease-out, transform 0.2s $ease-out;
+
+    &:hover {
+      background: $color-link-hover;
+      color: #fff;
+      text-decoration: none;
+      transform: translateY(-2px);
+    }
+
+    @media (min-width: $breakpoint-sidebar + 1) {
+      margin-top: 0;
+    }
+  }
+
+  &__nav {
+    display: none;
+  }
+}
+
+// ================================
+// Block: bottom-nav（浮く白バー・SPのみ）
+// ================================
+.bottom-nav {
+  @media (min-width: $breakpoint-sidebar + 1) {
+    display: none;
+  }
+
+  position: fixed;
+  bottom: 12px;
+  left: 12px;
+  right: 12px;
+  max-width: calc(#{$max-width} - 24px);
+  margin: 0 auto;
+  background: $color-bg;
+  border: 1px solid $color-border;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(45, 42, 38, 0.12);
+  z-index: 100;
+}
+
+.bottom-nav__inner {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0.5rem 0.5rem;
+  max-width: 100%;
+}
+
+.bottom-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.7rem;
+  color: $color-text-light;
+  text-decoration: none;
+  border-radius: 12px;
+  transition: background 0.2s $ease-out, color 0.2s;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  -webkit-appearance: none;
+  appearance: none;
+
+  &:hover {
+    color: $color-accent;
+    text-decoration: none;
+    background: $color-bg-alt;
+  }
+
+  &--current,
+  &--active {
+    color: $color-accent;
+    font-weight: 600;
+  }
+}
+
+body.is-search-open .bottom-nav .js-toggle-search {
+  color: $color-accent;
+  font-weight: 600;
+}
+
+.bottom-nav__icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+// ================================
+// SP用 サイドバーオーバーレイ
+// ================================
+@media (max-width: $breakpoint-sidebar) {
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    pointer-events: none;
+    visibility: hidden;
+    transition: visibility 0.25s $ease-out;
+    overflow: hidden;
+  }
+
+  body.is-sidebar-open .sidebar-overlay {
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  .sidebar-overlay__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transition: opacity 0.25s $ease-out;
+  }
+
+  body.is-sidebar-open .sidebar-overlay__backdrop {
+    opacity: 1;
+  }
+
+  .sidebar-overlay__panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 300px;
+    max-width: calc(100vw - 24px);
+    box-sizing: border-box;
+    background: $color-bg;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.2);
+    border-radius: 0;
+    transform: translateX(100%);
+    transition: transform 0.3s $ease-out;
+    overflow: hidden !important;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-overlay[data-panel="menu"] .sidebar-overlay__panel {
+    background: $color-bg-page;
+    border-left: 4px solid $color-accent;
+    border-radius: $card-radius 0 0 $card-radius;
+    box-shadow: -4px 0 24px rgba(45, 42, 38, 0.08);
+  }
+
+  .sidebar-overlay[data-panel="sidebar"] .sidebar-overlay__panel {
+    background: $color-bg;
+    border-left: 1px solid $color-border;
+  }
+
+  body.is-sidebar-open .sidebar-overlay__panel {
+    transform: translateX(0);
+  }
+
+  .sidebar-overlay__close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 1rem 1.25rem;
+    font-size: 1.75rem;
+    font-weight: 300;
+    background: none;
+    border: none;
+    cursor: pointer;
+    line-height: 1;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .sidebar-overlay[data-panel="menu"] .sidebar-overlay__close {
+    color: $color-text;
+    border-bottom: 1px solid $color-border;
+  }
+
+  .sidebar-overlay[data-panel="sidebar"] .sidebar-overlay__close {
+    color: $color-text;
+    border-bottom: 1px solid $color-border;
+  }
+
+  .sidebar-overlay__body {
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden !important;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sidebar-overlay__body--menu {
+    padding: 0.75rem 1rem 1.5rem;
+  }
+
+  .sidebar-overlay__body--sidebar {
+    padding: 0.75rem;
+  }
+
+  .sidebar-overlay__panel * {
+    box-sizing: border-box;
+  }
+
+  .sidebar-overlay__nav {
+    max-width: 100%;
+  }
+
+  .sidebar-overlay__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sidebar-overlay__item {
+    margin: 0;
+  }
+
+  .sidebar-overlay__item a {
+    display: block;
+    padding: 0.65rem 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: $color-text;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.2s $ease-out, color 0.2s $ease-out;
+  }
+
+  .sidebar-overlay__item a:hover {
+    color: $color-accent;
+    text-decoration: none;
+    background: rgba($color-accent, 0.06);
+  }
+
+  // サイドバー用パネル内：カレンダー・ウィジェット・プロフィール
+  .sidebar-overlay__body--sidebar .calendar--overlay {
+    padding: 0.75rem 0;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+
+    .calendar__table {
+      width: 100% !important;
+      max-width: 100% !important;
+      table-layout: fixed;
+      font-size: 0.85rem;
+      th, td { padding: 0.25rem 0.2rem; }
+    }
+    .calendar__title {
+      text-align: center;
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+    }
+    .calendar__table td a {
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .calendar__sat,
+    .calendar__sun {
+      background: rgba($color-header-bg, 0.12);
+    }
+    .calendar__nav {
+      margin: 0.35rem 0 0;
+      font-size: 0.85rem;
+      text-align: center;
+      a { color: $color-link; }
+    }
+  }
+
+  .sidebar-overlay__body--sidebar .widget--overlay-card {
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid $color-border;
+    max-width: 100%;
+  }
+
+  .sidebar-overlay__body--sidebar .widget--overlay-card__link {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    text-decoration: none;
+    color: inherit;
+    padding: 0.45rem 0.6rem;
+    background: $color-bg-alt;
+    border: 1px solid $color-border;
+    border-radius: $card-radius;
+    transition: border-color 0.2s $ease-out, box-shadow 0.2s $ease-out;
+    &:hover {
+      text-decoration: none;
+      color: inherit;
+      border-color: rgba($color-accent, 0.3);
+      box-shadow: $card-shadow;
+    }
+  }
+
+  .sidebar-overlay__body--sidebar .widget--overlay .widget__item--overlay .widget--overlay-card__link {
+    display: flex !important;
+    flex-direction: row !important;
+  }
+
+  .sidebar-overlay__body--sidebar .widget--overlay-card__thumb {
+    position: relative;
+    flex-shrink: 0;
+    width: 72px;
+    min-width: 72px;
+    height: 54px;
+    border-radius: 6px;
+    overflow: hidden;
+    background: $color-bg-alt;
+    img {
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  .sidebar-overlay__body--sidebar .widget--overlay-card__tag {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    padding: 2px 6px;
+    font-size: 0.65rem;
+    font-weight: 600;
+    background: $color-accent;
+    color: #fff;
+    border-radius: 3px;
+    letter-spacing: 0.02em;
+  }
+
+  .sidebar-overlay__body--sidebar .widget--overlay-card__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .sidebar-overlay__body--sidebar .widget--overlay-card__title {
+    margin: 0 0 0.15rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: $color-text;
+    line-height: 1.3;
+  }
+
+  .sidebar-overlay__body--sidebar .widget--overlay-card__text {
+    margin: 0 0 0.2rem;
+    font-size: 0.75rem;
+    color: $color-text-light;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    line-height: 1.4;
+  }
+
+  .sidebar-overlay__body--sidebar .widget--overlay .widget__title {
+    margin: 0 0 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .sidebar-overlay__body--sidebar .widget__list--overlay {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+  }
+
+  .sidebar-overlay__body--sidebar .widget__item--overlay {
+    margin: 0 0 0.75rem;
+    &:last-child { margin-bottom: 0; }
+  }
+
+  .sidebar-overlay__body--sidebar .widget--author-overlay {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+    min-width: 0;
+  }
+
+  .sidebar-overlay__body--sidebar .author-overlay__card {
+    padding: 0.6rem 0.75rem;
+    background: rgba($color-tag, 0.25);
+    border: 1px solid $color-border;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .sidebar-overlay__body--sidebar .author-overlay__avatar {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 0.35rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background: $color-bg;
+    img {
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  .sidebar-overlay__body--sidebar .author-overlay__name {
+    margin: 0 0 0.35rem;
+    font-weight: 600;
+    font-size: 1rem;
+    a {
+      color: $color-link;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      &:hover { color: $color-link-hover; }
+    }
+  }
+
+  .sidebar-overlay__body--sidebar .author-overlay__bio {
+    margin: 0 0 0.5rem;
+    text-align: justify;
+    font-size: 0.75rem;
+    color: $color-text;
+    line-height: 1.5;
+    p { margin: 0; }
+  }
+
+  .sidebar-overlay__body--sidebar .author-overlay__icons {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .sidebar-overlay__body--sidebar .author-overlay__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+    color: $color-text-light;
+    text-decoration: none;
+    &:hover { color: $color-text; }
+  }
+}
