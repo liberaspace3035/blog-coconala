@@ -24,6 +24,9 @@ $card-radius: 16px;
 $card-shadow: 0 2px 12px rgba(45, 42, 38, 0.06);
 $card-shadow-hover: 0 12px 32px rgba(45, 42, 38, 0.1);
 $ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+// 画像比率（サムネイル・アイキャッチ）
+$aspect-thumb: 4 / 3;   // 横長デフォルト
+$aspect-thumb-portrait: 3 / 4;   // 縦長用
 
 // ================================
 // Base / Reset
@@ -95,7 +98,7 @@ body {
   background: $color-header-bg;
   text-align: center;
   position: relative;
-  border-bottom: 4px solid $color-accent;
+  border-bottom: none;
 
   @media (max-width: 600px) {
     padding: 1.25rem 1rem;
@@ -246,13 +249,12 @@ body.is-search-open .search-overlay__panel {
   align-items: center;
   padding: 0.4rem 0.5rem 0.4rem 1rem;
   background: $color-bg-alt;
-  border: 2px solid $color-border;
+  border: none;
   border-radius: 999px;
-  transition: border-color 0.2s $ease-out, box-shadow 0.2s $ease-out;
+  transition: box-shadow 0.2s $ease-out;
 
   &:focus-within {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 1px #2563eb;
+    box-shadow: 0 0 0 2px #2563eb;
   }
 }
 
@@ -329,21 +331,10 @@ body.is-search-open .search-overlay__panel {
   background: $color-bg;
   border-radius: $card-radius;
   box-shadow: $card-shadow;
-  border: 1px solid $color-border;
+  border: none;
   overflow: hidden;
   position: relative;
-  transition: transform 0.25s $ease-out, box-shadow 0.25s $ease-out, border-color 0.25s $ease-out;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: $color-accent;
-    opacity: 0.9;
-  }
+  transition: transform 0.25s $ease-out, box-shadow 0.25s $ease-out;
 
   &:first-child {
     padding-top: 0;
@@ -367,21 +358,26 @@ body.is-search-open .search-overlay__panel {
   &:hover {
     transform: translateY(-3px);
     box-shadow: $card-shadow-hover;
-    border-color: rgba(156, 163, 175, 0.4);
   }
 
   &__thumb {
     position: relative;
     flex-shrink: 0;
     width: 120px;
-    height: 90px;
+    aspect-ratio: $aspect-thumb;
     border-radius: 10px;
     overflow: hidden;
     background: $color-bg-alt;
     margin-top: 2px;
 
+    &--portrait {
+      aspect-ratio: $aspect-thumb-portrait;
+    }
+
     img,
     .entry__img {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -503,7 +499,7 @@ body.is-search-open .search-overlay__panel {
     letter-spacing: 0.04em;
     background: $color-bg;
     color: $color-accent;
-    border: 2px solid $color-accent;
+    border: none;
     border-radius: 12px;
     text-decoration: none;
     transition: background 0.2s $ease-out, color 0.2s, transform 0.2s $ease-out;
@@ -535,7 +531,7 @@ body.is-search-open .search-overlay__panel {
     font-weight: 600;
     background: $color-bg;
     color: $color-accent;
-    border: 2px solid $color-accent;
+    border: none;
     border-radius: 10px;
   }
 
@@ -554,14 +550,13 @@ body.is-search-open .search-overlay__panel {
     padding: 0 0.5rem;
     background: $color-bg;
     color: $color-text;
-    border: 2px solid $color-border;
+    border: none;
     border-radius: 10px;
     text-decoration: none;
-    transition: background 0.2s $ease-out, border-color 0.2s, color 0.2s;
+    transition: background 0.2s $ease-out, color 0.2s;
 
     &:hover {
       background: $color-bg-alt;
-      border-color: $color-accent;
       color: $color-accent;
       text-decoration: none;
     }
@@ -596,7 +591,7 @@ body.is-search-open .search-overlay__panel {
     td {
       padding: 0.4rem 0.25rem;
       text-align: center;
-      border: 1px solid $color-border;
+      border: none;
     }
 
     th {
@@ -635,12 +630,11 @@ body.is-search-open .search-overlay__panel {
   color: inherit;
   padding: 0.6rem;
   background: $color-bg-alt;
-  border: 1px solid $color-border;
+  border: none;
   border-radius: $card-radius;
-  transition: border-color 0.2s $ease-out, box-shadow 0.2s $ease-out;
+  transition: box-shadow 0.2s $ease-out;
 
   &:hover {
-    border-color: rgba($color-accent, 0.3);
     box-shadow: $card-shadow;
     color: inherit;
     text-decoration: none;
@@ -649,13 +643,20 @@ body.is-search-open .search-overlay__panel {
 
 .sidebar .widget--about-card__thumb {
   flex-shrink: 0;
+  position: relative;
   width: 80px;
-  height: 60px;
+  aspect-ratio: $aspect-thumb;
   border-radius: 6px;
   overflow: hidden;
   background: $color-bg;
 
+  &--portrait {
+    aspect-ratio: $aspect-thumb-portrait;
+  }
+
   img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -712,12 +713,11 @@ body.is-search-open .search-overlay__panel {
   color: inherit;
   padding: 0.6rem;
   background: $color-bg-alt;
-  border: 1px solid $color-border;
+  border: none;
   border-radius: $card-radius;
-  transition: border-color 0.2s $ease-out, box-shadow 0.2s $ease-out;
+  transition: box-shadow 0.2s $ease-out;
 
   &:hover {
-    border-color: rgba($color-accent, 0.3);
     box-shadow: $card-shadow;
     color: inherit;
     text-decoration: none;
@@ -726,13 +726,20 @@ body.is-search-open .search-overlay__panel {
 
 .sidebar .widget--popular-cards .widget--about-card__thumb {
   flex-shrink: 0;
+  position: relative;
   width: 80px;
-  height: 60px;
+  aspect-ratio: $aspect-thumb;
   border-radius: 6px;
   overflow: hidden;
   background: $color-bg;
 
+  &--portrait {
+    aspect-ratio: $aspect-thumb-portrait;
+  }
+
   img {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -767,7 +774,7 @@ body.is-search-open .search-overlay__panel {
 .sidebar .widget--author .widget__body {
   padding: 0.75rem;
   background: rgba($color-tag, 0.2);
-  border: 2px solid rgba($color-accent, 0.4);
+  border: none;
   border-radius: 8px;
   text-align: center;
 }
@@ -801,7 +808,7 @@ body.is-search-open .search-overlay__panel {
   border-radius: 50%;
   overflow: hidden;
   background: $color-bg;
-  border: 2px solid $color-border;
+  border: none;
 
   img {
     width: 100%;
@@ -817,7 +824,7 @@ body.is-search-open .search-overlay__panel {
 .widget {
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid $color-border;
+  border-bottom: none;
 
   &:last-of-type {
     border-bottom: none;
@@ -936,7 +943,7 @@ body.is-search-open .search-overlay__panel {
 // ================================
 .site-footer {
   padding: 1.75rem 1rem 3rem;
-  border-top: 1px solid $color-border;
+  border-top: none;
   font-size: 0.9rem;
   color: $color-text-light;
   position: relative;
@@ -1039,7 +1046,7 @@ body.is-search-open .search-overlay__panel {
 // ================================
 .privacy-policy {
   padding: 2rem 1rem 3rem;
-  border-top: 1px solid $color-border;
+  border-top: none;
   background: $color-bg-alt;
 }
 
@@ -1124,9 +1131,10 @@ body.is-search-open .search-overlay__panel {
   line-height: 1.5;
   color: $color-text;
   background: $color-bg;
-  border: 1px solid $color-border;
+  border: none;
   border-radius: 8px;
-  transition: border-color 0.2s $ease-out, box-shadow 0.2s $ease-out;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.2s $ease-out;
 
   &::placeholder {
     color: $color-accent;
@@ -1134,7 +1142,6 @@ body.is-search-open .search-overlay__panel {
 
   &:focus {
     outline: none;
-    border-color: $color-accent;
     box-shadow: 0 0 0 3px rgba(156, 163, 175, 0.2);
   }
 }
@@ -1252,27 +1259,14 @@ body.is-search-open .search-overlay__panel {
   border-radius: $card-radius;
   overflow: hidden;
   background: $color-bg-alt;
-  border: 1px solid $color-border;
+  border: none;
   box-shadow: $card-shadow;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: $color-accent;
-    opacity: 0.9;
-    z-index: 1;
-  }
-
+  // 画像の元の比率を保持（横長・縦長どちらもそのまま表示）
   .article-single__img {
     width: 100%;
     height: auto;
     display: block;
-    object-fit: cover;
-    aspect-ratio: 16 / 9;
     vertical-align: middle;
   }
 }
@@ -1288,6 +1282,16 @@ body.is-search-open .search-overlay__panel {
     &:last-child {
       margin-bottom: 0;
     }
+  }
+
+  // 記事内に挿入する画像（横長・縦長とも元の比率で表示）
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1rem 0;
+    border-radius: 8px;
+    overflow: hidden;
   }
 }
 
@@ -1306,7 +1310,7 @@ body.is-search-open .search-overlay__panel {
   max-width: calc(#{$max-width} - 24px);
   margin: 0 auto;
   background: $color-bg;
-  border: 1px solid $color-border;
+  border: none;
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(45, 42, 38, 0.12);
   z-index: 100;
@@ -1412,14 +1416,14 @@ body.is-search-open .bottom-nav .js-toggle-search {
 
   .sidebar-overlay[data-panel="menu"] .sidebar-overlay__panel {
     background: $color-bg-page;
-    border-left: 4px solid $color-accent;
+    border-left: none;
     border-radius: $card-radius 0 0 $card-radius;
     box-shadow: -4px 0 24px rgba(45, 42, 38, 0.08);
   }
 
   .sidebar-overlay[data-panel="sidebar"] .sidebar-overlay__panel {
     background: $color-bg;
-    border-left: 1px solid $color-border;
+    border-left: none;
   }
 
   body.is-sidebar-open .sidebar-overlay__panel {
@@ -1445,12 +1449,12 @@ body.is-search-open .bottom-nav .js-toggle-search {
 
   .sidebar-overlay[data-panel="menu"] .sidebar-overlay__close {
     color: $color-text;
-    border-bottom: 1px solid $color-border;
+    border-bottom: none;
   }
 
   .sidebar-overlay[data-panel="sidebar"] .sidebar-overlay__close {
     color: $color-text;
-    border-bottom: 1px solid $color-border;
+    border-bottom: none;
   }
 
   .sidebar-overlay__body {
@@ -1545,7 +1549,7 @@ body.is-search-open .bottom-nav .js-toggle-search {
   .sidebar-overlay__body--sidebar .widget--overlay-card {
     padding-bottom: 0.75rem;
     margin-bottom: 0.75rem;
-    border-bottom: 1px solid $color-border;
+    border-bottom: none;
     max-width: 100%;
   }
 
@@ -1561,13 +1565,12 @@ body.is-search-open .bottom-nav .js-toggle-search {
     color: inherit;
     padding: 0.45rem 0.6rem;
     background: $color-bg-alt;
-    border: 1px solid $color-border;
+    border: none;
     border-radius: $card-radius;
-    transition: border-color 0.2s $ease-out, box-shadow 0.2s $ease-out;
+    transition: box-shadow 0.2s $ease-out;
     &:hover {
       text-decoration: none;
       color: inherit;
-      border-color: rgba($color-accent, 0.3);
       box-shadow: $card-shadow;
     }
   }
@@ -1582,14 +1585,20 @@ body.is-search-open .bottom-nav .js-toggle-search {
     flex-shrink: 0;
     width: 72px;
     min-width: 72px;
-    height: 54px;
+    aspect-ratio: $aspect-thumb;
     border-radius: 6px;
     overflow: hidden;
     background: $color-bg-alt;
+
+    &.widget--overlay-card__thumb--portrait {
+      aspect-ratio: $aspect-thumb-portrait;
+    }
+
     img {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
-      max-width: 100%;
       object-fit: cover;
       display: block;
     }
@@ -1661,7 +1670,7 @@ body.is-search-open .bottom-nav .js-toggle-search {
   .sidebar-overlay__body--sidebar .author-overlay__card {
     padding: 0.6rem 0.75rem;
     background: rgba($color-tag, 0.25);
-    border: 1px solid $color-border;
+    border: none;
     border-radius: 8px;
     text-align: center;
   }
