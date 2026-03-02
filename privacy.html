@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>プライバシーポリシー | かつの一日ひとつ</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <p class="site-header__description">散歩したり、本を読んだり、何か書いたり</p>
+    <h1 class="site-header__title"><a href="index.html">かつの一日ひとつ</a></h1>
+  </header>
+
+  <div class="page page--subpage" id="top">
+    <div class="content-area">
+      <main class="content-area__main">
+        <div class="privacy-policy">
+          <div class="privacy-policy__inner">
+            <h1 class="privacy-policy__title">プライバシーポリシー</h1>
+            <div class="privacy-policy__body">
+              <p>本ブログでは、お問い合わせの際にご記入いただいたメールアドレス等の個人情報を、お問い合わせへの返信および必要な連絡にのみ使用し、第三者に開示・提供することはありません。</p>
+              <p>アクセス解析ツール（Googleアナリティクス等）を使用している場合は、Cookieにより匿名でアクセス情報を収集している場合があります。収集した情報はサイトの改善目的で使用し、個人を特定するものではありません。</p>
+              <p>本ポリシーは必要に応じて改定することがあります。改定した場合は当ページでお知らせします。</p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <p class="site-footer__branding">かつの一日ひとつ</p>
+        <div class="site-footer__right">
+          <p class="site-footer__copyright">© 2023 かつの一日ひとつ.</p>
+          <a href="#top" class="site-footer__to-top" aria-label="トップへ">↑</a>
+        </div>
+      </div>
+    </footer>
+
+    <footer class="bottom-nav">
+      <nav class="bottom-nav__inner">
+        <button type="button" class="bottom-nav__item js-open-sidebar" data-overlay="menu" aria-label="メニューを開く">
+          <span class="bottom-nav__icon" aria-hidden="true">☰</span>
+          <span class="bottom-nav__label">メニュー</span>
+        </button>
+        <a href="index.html" class="bottom-nav__item">
+          <span class="bottom-nav__icon" aria-hidden="true">⌂</span>
+          <span class="bottom-nav__label">ホーム</span>
+        </a>
+        <button type="button" class="bottom-nav__item js-toggle-search" aria-label="検索を開く">
+          <span class="bottom-nav__icon" aria-hidden="true">⌕</span>
+          <span class="bottom-nav__label">検索</span>
+        </button>
+        <a href="#top" class="bottom-nav__item">
+          <span class="bottom-nav__icon" aria-hidden="true">↑</span>
+          <span class="bottom-nav__label">トップ</span>
+        </a>
+        <button type="button" class="bottom-nav__item js-open-sidebar" data-overlay="sidebar" aria-label="サイドバーを開く">
+          <span class="bottom-nav__icon" aria-hidden="true">▌</span>
+          <span class="bottom-nav__label">サイドバー</span>
+        </button>
+      </nav>
+    </footer>
+  </div>
+
+  <div class="search-overlay" id="search-overlay" aria-hidden="true">
+    <div class="search-overlay__backdrop js-close-search" aria-label="閉じる"></div>
+    <div class="search-overlay__panel">
+      <div class="search-overlay__inner">
+        <form class="search-inline__form search-overlay__form" action="#" method="get" role="search">
+          <label for="search-overlay-input" class="visually-hidden">サイト内を検索</label>
+          <input type="search" id="search-overlay-input" class="search-inline__input" name="q" placeholder="サイト内を検索" autocomplete="off">
+          <button type="submit" class="search-inline__submit" aria-label="検索">
+            <span class="search-inline__icon" aria-hidden="true">⌕</span>
+          </button>
+        </form>
+        <button type="button" class="search-overlay__close js-close-search" aria-label="閉じる">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true" data-panel="">
+    <div class="sidebar-overlay__backdrop js-close-sidebar" aria-label="閉じる"></div>
+    <div class="sidebar-overlay__panel">
+      <button type="button" class="sidebar-overlay__close js-close-sidebar" aria-label="閉じる">
+        <span aria-hidden="true">×</span>
+      </button>
+      <div class="sidebar-overlay__body sidebar-overlay__body--menu" hidden>
+        <nav class="sidebar-overlay__nav" aria-label="メニュー">
+          <ul class="sidebar-overlay__list">
+            <li class="sidebar-overlay__item"><a href="index.html">ホーム</a></li>
+            <li class="sidebar-overlay__item"><a href="contact.html">お問い合わせ</a></li>
+            <li class="sidebar-overlay__item"><a href="privacy.html">プライバシーポリシー</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="sidebar-overlay__body sidebar-overlay__body--sidebar" hidden>
+        <section class="widget widget--contact">
+          <h3 class="widget__title">お問い合わせ</h3>
+          <div class="widget__body">
+            <p><a href="contact.html">お問い合わせフォーム</a></p>
+            <p class="widget__contact-email"><a href="mailto:infinityzerorei0@gmail.com">infinityzerorei0@gmail.com</a></p>
+          </div>
+        </section>
+        <section class="widget widget--privacy">
+          <h3 class="widget__title">プライバシーポリシー</h3>
+          <div class="widget__body">
+            <p><a href="privacy.html">プライバシーポリシーを読む</a></p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <script src="sidebar-overlay.js"></script>
+</body>
+</html>

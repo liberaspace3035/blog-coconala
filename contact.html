@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お問い合わせ | かつの一日ひとつ</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="site-header">
+    <p class="site-header__description">散歩したり、本を読んだり、何か書いたり</p>
+    <h1 class="site-header__title"><a href="index.html">かつの一日ひとつ</a></h1>
+  </header>
+
+  <div class="page page--subpage" id="top">
+    <div class="content-area">
+      <main class="content-area__main">
+        <div class="page-form">
+          <h1 class="page-form__title">お問い合わせ</h1>
+          <p class="page-form__lead">ご質問・ご要望は下記フォームにご記入のうえ、送信ボタンを押してください。お使いのメールソフトが開きます。</p>
+          <form class="page-form__form" id="contact-form" action="#" method="get">
+            <div class="page-form__row">
+              <label for="contact-name" class="page-form__label">お名前 <span class="page-form__required" aria-hidden="true">*</span></label>
+              <input type="text" id="contact-name" class="page-form__input" name="name" required placeholder="お名前">
+            </div>
+            <div class="page-form__row">
+              <label for="contact-email" class="page-form__label">メールアドレス <span class="page-form__required" aria-hidden="true">*</span></label>
+              <input type="email" id="contact-email" class="page-form__input" name="email" required placeholder="example@email.com">
+            </div>
+            <div class="page-form__row">
+              <label for="contact-subject" class="page-form__label">件名</label>
+              <input type="text" id="contact-subject" class="page-form__input" name="subject" placeholder="件名">
+            </div>
+            <div class="page-form__row">
+              <label for="contact-message" class="page-form__label">お問い合わせ内容 <span class="page-form__required" aria-hidden="true">*</span></label>
+              <textarea id="contact-message" class="page-form__textarea" name="message" rows="6" required placeholder="お問い合わせ内容をご記入ください"></textarea>
+            </div>
+            <div class="page-form__submit-wrap">
+              <button type="submit" class="page-form__submit">送信する（メールソフトを開く）</button>
+            </div>
+          </form>
+          <p class="page-form__note">メールが使えない場合は <a href="mailto:infinityzerorei0@gmail.com">infinityzerorei0@gmail.com</a> まで直接ご連絡ください。</p>
+        </div>
+      </main>
+    </div>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <p class="site-footer__branding">かつの一日ひとつ</p>
+        <div class="site-footer__right">
+          <p class="site-footer__copyright">© 2023 かつの一日ひとつ.</p>
+          <a href="#top" class="site-footer__to-top" aria-label="トップへ">↑</a>
+        </div>
+      </div>
+    </footer>
+
+    <footer class="bottom-nav">
+      <nav class="bottom-nav__inner">
+        <button type="button" class="bottom-nav__item js-open-sidebar" data-overlay="menu" aria-label="メニューを開く">
+          <span class="bottom-nav__icon" aria-hidden="true">☰</span>
+          <span class="bottom-nav__label">メニュー</span>
+        </button>
+        <a href="index.html" class="bottom-nav__item">
+          <span class="bottom-nav__icon" aria-hidden="true">⌂</span>
+          <span class="bottom-nav__label">ホーム</span>
+        </a>
+        <button type="button" class="bottom-nav__item js-toggle-search" aria-label="検索を開く">
+          <span class="bottom-nav__icon" aria-hidden="true">⌕</span>
+          <span class="bottom-nav__label">検索</span>
+        </button>
+        <a href="#top" class="bottom-nav__item">
+          <span class="bottom-nav__icon" aria-hidden="true">↑</span>
+          <span class="bottom-nav__label">トップ</span>
+        </a>
+        <button type="button" class="bottom-nav__item js-open-sidebar" data-overlay="sidebar" aria-label="サイドバーを開く">
+          <span class="bottom-nav__icon" aria-hidden="true">▌</span>
+          <span class="bottom-nav__label">サイドバー</span>
+        </button>
+      </nav>
+    </footer>
+  </div>
+
+  <div class="search-overlay" id="search-overlay" aria-hidden="true">
+    <div class="search-overlay__backdrop js-close-search" aria-label="閉じる"></div>
+    <div class="search-overlay__panel">
+      <div class="search-overlay__inner">
+        <form class="search-inline__form search-overlay__form" action="#" method="get" role="search">
+          <label for="search-overlay-input" class="visually-hidden">サイト内を検索</label>
+          <input type="search" id="search-overlay-input" class="search-inline__input" name="q" placeholder="サイト内を検索" autocomplete="off">
+          <button type="submit" class="search-inline__submit" aria-label="検索">
+            <span class="search-inline__icon" aria-hidden="true">⌕</span>
+          </button>
+        </form>
+        <button type="button" class="search-overlay__close js-close-search" aria-label="閉じる">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-overlay" id="sidebar-overlay" aria-hidden="true" data-panel="">
+    <div class="sidebar-overlay__backdrop js-close-sidebar" aria-label="閉じる"></div>
+    <div class="sidebar-overlay__panel">
+      <button type="button" class="sidebar-overlay__close js-close-sidebar" aria-label="閉じる">
+        <span aria-hidden="true">×</span>
+      </button>
+      <div class="sidebar-overlay__body sidebar-overlay__body--menu" hidden>
+        <nav class="sidebar-overlay__nav" aria-label="メニュー">
+          <ul class="sidebar-overlay__list">
+            <li class="sidebar-overlay__item"><a href="index.html">ホーム</a></li>
+            <li class="sidebar-overlay__item"><a href="contact.html">お問い合わせ</a></li>
+            <li class="sidebar-overlay__item"><a href="privacy.html">プライバシーポリシー</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="sidebar-overlay__body sidebar-overlay__body--sidebar" hidden>
+        <section class="widget widget--contact">
+          <h3 class="widget__title">お問い合わせ</h3>
+          <div class="widget__body">
+            <p><a href="contact.html">お問い合わせフォーム</a></p>
+            <p class="widget__contact-email"><a href="mailto:infinityzerorei0@gmail.com">infinityzerorei0@gmail.com</a></p>
+          </div>
+        </section>
+        <section class="widget widget--privacy">
+          <h3 class="widget__title">プライバシーポリシー</h3>
+          <div class="widget__body">
+            <p><a href="privacy.html">プライバシーポリシーを読む</a></p>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <script src="sidebar-overlay.js"></script>
+  <script>
+    (function () {
+      var form = document.getElementById('contact-form');
+      var to = 'infinityzerorei0@gmail.com';
+      if (!form) return;
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var name = (document.getElementById('contact-name') && document.getElementById('contact-name').value) || '';
+        var email = (document.getElementById('contact-email') && document.getElementById('contact-email').value) || '';
+        var subject = (document.getElementById('contact-subject') && document.getElementById('contact-subject').value) || '【かつの一日ひとつ】お問い合わせ';
+        var message = (document.getElementById('contact-message') && document.getElementById('contact-message').value) || '';
+        var body = 'お名前: ' + name + '\nメールアドレス: ' + email + '\n\n' + message;
+        var url = 'mailto:' + encodeURIComponent(to) +
+          '?subject=' + encodeURIComponent(subject) +
+          '&body=' + encodeURIComponent(body);
+        window.location.href = url;
+      });
+    })();
+  </script>
+</body>
+</html>
